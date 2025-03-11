@@ -20,12 +20,9 @@ def check_fibonacci(data: Sequence[int]) -> bool:
                 continue
             
             if data[index] != data[index-1] + data[index-2]:
-                print('false')
                 return False
             else:
-                print('true') 
-                return True
-    print('false')     
+                return True    
     return False
 
-check_fibonacci([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89])
+print(check_fibonacci([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]))
