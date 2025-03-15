@@ -52,6 +52,65 @@ PEP8 соблюдать строго.
 import datetime
 from collections import defaultdict
 
+class DeadlineError(Exception):
+    pass
+
+class Person:
+    def __init__(self, last_name: str, first_name: str) -> None:
+        self.last_name = last_name
+        self.first_name = first_name
+
+class Homework:
+    def __init__(self, text: str, days: int) -> None:
+        self.text = text
+        self.deadline = datetime.timedelta(days=days)
+        self.created = datetime.datetime.now()
+
+    def is_active(self) -> bool:
+        return (datetime.datetime.now() - self.created) < self.deadline
+    
+
+class HomeworkResult:
+    def __init__(self, author, homework, solution: str) -> None:
+        if not isinstance(homework, Homework):
+            raise TypeError('Not homework')
+
+        self.homework = homework
+        self.solution = solution
+        self.author = author
+        self.created = datetime.datetime.now()
+
+
+class Student(Person):
+
+    def do_homework(self, homework: Homework, solution: str):
+        if homework.is_active():
+            return HomeworkResult(self, homework, solution)
+        
+        raise DeadlineError('You are late')
+    
+
+class Teacher(Person):
+    homework_done = defaultdict(set)
+
+    @staticmethod
+    def create_homework(text: str, days: int) -> Homework:
+        return Homework(text, days)
+    
+    @classmethod
+    def check_homework(self, result: HomeworkResult) -> bool:
+        if len(result.solution) > 5:
+            self.homework_done[result.homework].add(result)
+            return True
+        return False
+    
+    @classmethod
+    def reset_results(self, homework: Homework = None) -> None:
+        if homework is None:
+            self.homework_done.clear()
+        else:
+            self.homework_done.pop(homework, None)
+    
 
 if __name__ == '__main__':
     opp_teacher = Teacher('Daniil', 'Shadrin')
@@ -60,7 +119,7 @@ if __name__ == '__main__':
     lazy_student = Student('Roman', 'Petrov')
     good_student = Student('Lev', 'Sokolov')
 
-    oop_hw = opp_teacher.create_homework('Learn OOP', 1)
+    oop_hw = opp_teacher.create_homework('Learn OOP', 5)
     docs_hw = opp_teacher.create_homework('Read docs', 5)
 
     result_1 = good_student.do_homework(oop_hw, 'I have done this hw')
