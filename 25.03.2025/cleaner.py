@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 
 def cleanup_old_files(directory_path = 'your_file_path', max_age_hours=1): #u menya matyuki tam, poetomu ostavlyu takoy filepath (0_-)
     current_time = datetime.now()
-    # max_age = timedelta(hours=max_age_hours)
-    max_age = timedelta(seconds=1)
+    max_age = timedelta(hours=max_age_hours)
+    # max_age = timedelta(seconds=1)
     
     for filename in os.listdir(directory_path):
         file_path = os.path.join(directory_path, filename)
@@ -26,4 +26,4 @@ def cleanup_old_files(directory_path = 'your_file_path', max_age_hours=1): #u me
 if __name__ == "__main__":
     while True:
         cleanup_old_files()
-        time.sleep(1)  # 1 час
+        time.sleep(3600)  # 1 час
