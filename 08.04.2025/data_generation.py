@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import psycopg2
 from faker import Faker
 import random
@@ -7,7 +9,8 @@ DB_CONFIG = {
     "host": "localhost",
     "database": "postgres_db",
     "user": "postgres",
-    "password": "postgres"
+    "password": "postgres",
+    "client_encoding":"utf8"
 }
 
 fake = Faker('ru_RU')
@@ -104,6 +107,7 @@ def getContent(text):
 
 def main():
     conn = psycopg2.connect(**DB_CONFIG)
+
     cursor = conn.cursor()
     
     cursor.execute("TRUNCATE TABLE logs, comments, topics, users RESTART IDENTITY CASCADE")
